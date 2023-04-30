@@ -1,0 +1,55 @@
+id: openlst_openlst_mod
+label: OpenLST Frame+Encode
+category: '[openlst]'
+
+templates:
+  imports: from gnuradio import openlst
+  make: openlst.openlst_mod(preamble_bytes=${preamble_bytes}, sync_byte0=${sync_byte0}, sync_byte1=${sync_byte1}, sync_words=${sync_words}, fec=${fec}, whitening=${whitening}, bitrate=${bitrate}, max_latency=${max_latency})
+
+parameters:
+- id: preamble_bytes
+  label: Number of preamble bytes
+  dtype: int
+  default: 4
+- id: sync_byte1
+  label: Sync word byte 1
+  dtype: byte
+  default: 0xd3
+- id: sync_byte0
+  label: Sync word byte 0
+  dtype: byte
+  default: 0x91
+- id: sync_words
+  label: Number of sync words
+  dtype: int
+  default: 2
+- id: flags
+  label: Flags
+  dtype: byte
+  default: 0xC0
+- id: fec
+  label: Enable FEC
+  dtype: bool
+  default: true
+- id: whitening
+  label: Enable data whitening
+  dtype: bool
+  default: true
+- id: bitrate
+  label: Target bitrate
+  dtype: float
+  default: 7415.77
+- id: max_latency
+  label: Target latency (sec)
+  dtype: float
+  default: 0.1
+
+inputs:
+- label: message
+  domain: message
+
+outputs:
+- label: out
+  dtype: byte
+
+file_format: 1

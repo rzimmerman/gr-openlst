@@ -1,0 +1,53 @@
+id: openlst_openlst_demod
+label: OpenLST Deframe+Decode
+category: '[openlst]'
+
+templates:
+  imports: from gnuradio import openlst
+  make: openlst.openlst_demod(preamble_bytes=${preamble_bytes}, preamble_quality=${preamble_quality}, sync_byte1=${sync_byte1}, sync_byte0=${sync_byte0}, sync_words=${sync_words}, fec=${fec}, flags_mask=${flags_mask}, flags=${flags}, whitening=${whitening})
+
+parameters:
+- id: preamble_bytes
+  label: Number of preamble bytes
+  dtype: int
+  default: 4
+- id: preamble_quality
+  label: Minimum preamble bits
+  dtype: int
+  default: 30
+- id: sync_byte1
+  label: Sync word byte 1
+  dtype: byte
+  default: 0xd3
+- id: sync_byte0
+  label: Sync word byte 0
+  dtype: byte
+  default: 0x91
+- id: sync_words
+  label: Number of sync words
+  dtype: int
+  default: 2
+- id: fec
+  label: Enable FEC
+  dtype: bool
+  default: true
+- id: flags_mask
+  label: Flags mask
+  default: 0xC0
+- id: flags
+  label: Flags
+  default: 0
+- id: whitening
+  label: Enable data whitening
+  dtype: bool
+  default: true
+
+inputs:
+- label: in
+  dtype: byte
+
+outputs:
+- label: message
+  domain: message
+
+file_format: 1

@@ -1,0 +1,412 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: no_gui
+    hier_block_src_path: '.:'
+    id: openlst_transceiver
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: OpenLST Transceiver
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: bit_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '7415.77'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [272, 16.0]
+    rotation: 0
+    state: enabled
+- name: freq
+  id: variable
+  parameters:
+    comment: ''
+    value: 437e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 16.0]
+    rotation: 0
+    state: enabled
+- name: offset
+  id: variable
+  parameters:
+    comment: ''
+    value: 1e5
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [480, 16.0]
+    rotation: 0
+    state: enabled
+- name: resamp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [344, 16.0]
+    rotation: 0
+    state: enabled
+- name: samp_per_sym
+  id: variable
+  parameters:
+    comment: ''
+    value: samp_rate/bit_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 16.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 1e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [128, 16.0]
+    rotation: 0
+    state: enabled
+- name: blocks_freqshift_cc_0_0
+  id: blocks_freqshift_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq: offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sample_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1136, 144.0]
+    rotation: 0
+    state: true
+- name: blocks_freqshift_cc_0_0_0
+  id: blocks_freqshift_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq: -offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sample_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1136, 272.0]
+    rotation: 180
+    state: true
+- name: digital_gfsk_demod_0
+  id: digital_gfsk_demod
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq_error: '0.0'
+    gain_mu: '0.175'
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mu: '0.5'
+    omega_relative_limit: '0.005'
+    samples_per_symbol: resamp_rate
+    sensitivity: '1.0'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 236.0]
+    rotation: 180
+    state: true
+- name: digital_gfsk_mod_0
+  id: digital_gfsk_mod
+  parameters:
+    affinity: ''
+    alias: ''
+    bt: '0.35'
+    comment: ''
+    do_unpack: 'True'
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: resamp_rate
+    sensitivity: '1.0'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [408, 108.0]
+    rotation: 0
+    state: true
+- name: digital_symbol_sync_xx_0
+  id: digital_symbol_sync_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: digital.constellation_bpsk().base()
+    damping: '1.0'
+    loop_bw: '0.045'
+    max_dev: '1.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nfilters: '128'
+    osps: resamp_rate
+    pfb_mf_taps: '[]'
+    resamp_type: digital.IR_MMSE_8TAP
+    sps: resamp_rate
+    ted_gain: '1.0'
+    ted_type: digital.TED_MENGALI_AND_DANDREA_GMSK
+    type: cc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [576, 260.0]
+    rotation: 180
+    state: true
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 50e3
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_ccf
+    width: '1000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1000, 248.0]
+    rotation: 180
+    state: true
+- name: mmse_resampler_xx_0
+  id: mmse_resampler_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    phase_shift: '0'
+    resamp_ratio: resamp_rate/samp_per_sym
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 116.0]
+    rotation: 0
+    state: true
+- name: mmse_resampler_xx_0_0
+  id: mmse_resampler_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    phase_shift: '0'
+    resamp_ratio: samp_per_sym/resamp_rate
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 276.0]
+    rotation: 180
+    state: true
+- name: openlst_openlst_demod_0
+  id: openlst_openlst_demod
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fec: 'True'
+    flags: '0'
+    flags_mask: '0x80'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    preamble_bytes: '4'
+    preamble_quality: '30'
+    sync_byte0: 0X91
+    sync_byte1: '0xD3'
+    sync_words: '2'
+    whitening: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [224, 220.0]
+    rotation: 180
+    state: true
+- name: openlst_openlst_mod_0
+  id: openlst_openlst_mod
+  parameters:
+    affinity: ''
+    alias: ''
+    bitrate: '7415.77'
+    comment: ''
+    fec: 'True'
+    flags: '0xC0'
+    max_latency: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    preamble_bytes: '4'
+    sync_byte0: '0x91'
+    sync_byte1: '0xD3'
+    sync_words: '2'
+    whitening: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [224, 76.0]
+    rotation: 0
+    state: true
+- name: openlst_raw_zmq_sink_0
+  id: openlst_raw_zmq_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    socket_path: ipc:///tmp/openlst_rx
+    socket_type: PUB
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 256.0]
+    rotation: 180
+    state: true
+- name: openlst_raw_zmq_source_0
+  id: openlst_raw_zmq_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    socket_path: ipc:///tmp/openlst_tx
+    socket_type: PULL
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 112.0]
+    rotation: 0
+    state: true
+- name: soapy_hackrf_sink_0
+  id: soapy_hackrf_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: 'False'
+    bandwidth: '0'
+    center_freq: freq-offset
+    comment: ''
+    dev_args: ''
+    samp_rate: samp_rate
+    type: fc32
+    vga: '16'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 148.0]
+    rotation: 0
+    state: true
+- name: soapy_rtlsdr_source_0
+  id: soapy_rtlsdr_source
+  parameters:
+    affinity: ''
+    agc: 'False'
+    alias: ''
+    center_freq: freq-offset
+    comment: ''
+    dev_args: ''
+    freq_correction: '0'
+    gain: '20'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fc32
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1272, 272.0]
+    rotation: 180
+    state: true
+
+connections:
+- [blocks_freqshift_cc_0_0, '0', soapy_hackrf_sink_0, '0']
+- [blocks_freqshift_cc_0_0_0, '0', low_pass_filter_0, '0']
+- [digital_gfsk_demod_0, '0', openlst_openlst_demod_0, '0']
+- [digital_gfsk_mod_0, '0', mmse_resampler_xx_0, '0']
+- [digital_symbol_sync_xx_0, '0', digital_gfsk_demod_0, '0']
+- [low_pass_filter_0, '0', mmse_resampler_xx_0_0, '0']
+- [mmse_resampler_xx_0, '0', blocks_freqshift_cc_0_0, '0']
+- [mmse_resampler_xx_0_0, '0', digital_symbol_sync_xx_0, '0']
+- [openlst_openlst_demod_0, message, openlst_raw_zmq_sink_0, message]
+- [openlst_openlst_mod_0, '0', digital_gfsk_mod_0, '0']
+- [openlst_raw_zmq_source_0, message, openlst_openlst_mod_0, message]
+- [soapy_rtlsdr_source_0, '0', blocks_freqshift_cc_0_0_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.6.0

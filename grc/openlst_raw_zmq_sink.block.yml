@@ -1,0 +1,25 @@
+id: openlst_raw_zmq_sink
+label: Raw ZMQ Sink
+category: '[openlst]'
+
+templates:
+  imports: from gnuradio import openlst
+  make: openlst.raw_zmq_sink(${socket_path}, ${socket_type})
+
+parameters:
+- id: socket_path
+  label: Socket path
+  dtype: string
+  default: ipc:///tmp/socket
+- id: socket_type
+  label: Socket type
+  dtype: string
+  default: PUB
+
+inputs:
+- label: message
+  domain: message
+
+outputs: []
+
+file_format: 1
